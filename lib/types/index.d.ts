@@ -14,7 +14,13 @@
  */
 import type { IncomingMessage, ServerResponse } from 'node:http';
 export declare const name = "dock-git";
-/** Services required before mounting. */
+/** Services required before mounting.
+ *
+ * `webRuntime` was renamed to `webStartup` in @deepseek-ai/dsh-web-app
+ * 0.2.1-rc.2 with no compatibility alias, so injecting the old name left this
+ * plugin pending forever ("waiting for service: webRuntime"). The exposed
+ * surface is unchanged: `webStartup` still carries `trustedHosts`.
+ */
 export declare const inject: string[];
 export { SEP, runGit, buildLogArgs, buildPushBranchArgs, buildPushTagArgs, buildDetailArgs, buildShowFileArgs, buildShowRefArgs, buildBranchArgs, buildConfigGetArgs, buildConfigSetArgs, buildRemoteListArgs, buildRemoteAddArgs, buildRemoteRemoveArgs, buildRemoteSetUrlArgs, buildCreateBranchArgs, buildRenameBranchArgs, buildDeleteBranchArgs, buildCreateTagArgs, buildDeleteTagArgs, buildCheckoutArgs, buildSwitchArgs, buildSwitchDetachArgs, buildFetchArgs, buildPullArgs, buildFetchIntoArgs, buildStatusFilesArgs, buildStageAddArgs, buildStageResetArgs, buildCommitArgs, buildResetArgs, buildRevertArgs, buildMergeArgs, parseGitLog, parseShowRef, parseCommitDetail, parseNameStatus, parseNumStat, parseBranches, parseRemotes, parseStatusFiles, } from './git-ops.ts';
 export type { CommitDetailMeta, FileChange, GitLogCommit, StatusFile } from './types.ts';
@@ -43,7 +49,7 @@ interface WbContext {
             };
         } | undefined;
     };
-    webRuntime: {
+    webStartup: {
         trustedHosts: readonly string[];
     };
     effect(fn: () => void | (() => void), label?: string): void;

@@ -62,8 +62,14 @@ import { scanRepos } from './repos.ts'
 
 export const name = 'dock-git'
 
-/** Services required before mounting. */
-export const inject = ['webServer', 'sessions', 'webRuntime']
+/** Services required before mounting.
+ *
+ * `webRuntime` was renamed to `webStartup` in @deepseek-ai/dsh-web-app
+ * 0.2.1-rc.2 with no compatibility alias, so injecting the old name left this
+ * plugin pending forever ("waiting for service: webRuntime"). The exposed
+ * surface is unchanged: `webStartup` still carries `trustedHosts`.
+ */
+export const inject = ['webServer', 'sessions', 'webStartup']
 
 // Re-exported for the host smoke script (scripts/smoke-host.mjs), which drives
 // the data layer straight from lib/index.js after `pnpm run build`.
@@ -243,7 +249,7 @@ interface WbContext {
   sessions: {
     get(sessionId: string): { header: { cwd?: string } } | undefined
   }
-  webRuntime: {
+  webStartup: {
     trustedHosts: readonly string[]
   }
   effect(fn: () => void | (() => void), label?: string): void
@@ -1212,7 +1218,7 @@ export function apply(ctx: WbContext): void {
     kind: 'prefix',
     path: '/wb-git',
     handler: async (req, res) => {
-      if (!isTrustedRequest(req, ctx.webRuntime.trustedHosts)) {
+      if (!isTrustedRequest(req, ctx.webStartup.trustedHosts)) {
         writeJson(res, 403, { ok: false, error: { code: 'forbidden', message: 'forbidden' } })
         return
       }
