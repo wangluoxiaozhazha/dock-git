@@ -356,15 +356,18 @@ const CSS = `
   color: var(--dsw-alias-label-primary, #1f2328);
 }
 .dg-file { display: flex; align-items: center; gap: 6px; font-size: 12px; padding: 1px 0; }
-.dg-file-status { font-weight: 700; flex-shrink: 0; }
-.dg-file-A { color: #1a7f37; }
-.dg-file-M { color: #9a6700; }
-.dg-file-D { color: #d1242f; }
-.dg-file-R { color: #8250df; }
-/* Defensive: --diff-filter=AMDR never emits C/U today, but keep them styled
-   in case a future filter change does (dark-scheme purple/orange). */
-.dg-file-C { color: #8250df; }
-.dg-file-U { color: #d29922; }
+/* Status colour is carried by the file name itself, mirroring IDEA's default
+   File Status Colors. The leading status letter is hidden: the colour already
+   encodes the same information and the letter repeated on every row. */
+.dg-file-status { display: none; }
+.dg-file-A ~ .dg-tree-name { color: #009900; }
+.dg-file-M ~ .dg-tree-name { color: #0000ff; }
+.dg-file-D ~ .dg-tree-name { color: #808080; text-decoration: line-through; }
+.dg-file-R ~ .dg-tree-name { color: #0000ff; }
+/* C is never emitted by --diff-filter=AMDR, and U only shows up in the working
+   tree (untracked paths); both stay styled in case a filter changes. */
+.dg-file-C ~ .dg-tree-name { color: #0000ff; }
+.dg-file-U ~ .dg-tree-name { color: #ff0000; }
 .dg-file-add { color: #1a7f37; }
 .dg-file-del { color: #d1242f; }
 .dg-file-stats { margin-left: auto; flex-shrink: 0; }
@@ -879,12 +882,14 @@ body[data-ds-dark-theme] .dg-repo-depth-2 { border-color: #f0883e; color: #f0883
 body[data-ds-dark-theme] .dg-ref-head   { border-color: #3fb950; color: #3fb950; }
 body[data-ds-dark-theme] .dg-ref-remote { border-color: #a371f7; color: #a371f7; }
 body[data-ds-dark-theme] .dg-ref-tag    { border-color: #d29922; color: #d29922; }
-body[data-ds-dark-theme] .dg-file-A, body[data-ds-dark-theme] .dg-diff-add { color: #3fb950; }
-body[data-ds-dark-theme] .dg-file-M { color: #d29922; }
-body[data-ds-dark-theme] .dg-file-R { color: #a371f7; }
-body[data-ds-dark-theme] .dg-file-D, body[data-ds-dark-theme] .dg-diff-del { color: #ff7b72; }
-body[data-ds-dark-theme] .dg-file-C { color: #a371f7; }
-body[data-ds-dark-theme] .dg-file-U { color: #f0883e; }
+body[data-ds-dark-theme] .dg-diff-add { color: #3fb950; }
+body[data-ds-dark-theme] .dg-file-A ~ .dg-tree-name { color: #629755; }
+body[data-ds-dark-theme] .dg-file-M ~ .dg-tree-name { color: #6897bb; }
+body[data-ds-dark-theme] .dg-file-R ~ .dg-tree-name { color: #6897bb; }
+body[data-ds-dark-theme] .dg-file-C ~ .dg-tree-name { color: #6897bb; }
+body[data-ds-dark-theme] .dg-file-D ~ .dg-tree-name { color: #808080; }
+body[data-ds-dark-theme] .dg-diff-del { color: #ff7b72; }
+body[data-ds-dark-theme] .dg-file-U ~ .dg-tree-name { color: #d1675a; }
 body[data-ds-dark-theme] .dg-saved, body[data-ds-dark-theme] .dg-op-msg { color: #3fb950; }
 body[data-ds-dark-theme] .dg-op-error, body[data-ds-dark-theme] .dg-menu-item-danger, body[data-ds-dark-theme] .dg-btn-danger { color: #ff7b72; }
 body[data-ds-dark-theme] .dg-btn-danger { border-color: rgba(255, 123, 114, 0.45); }
